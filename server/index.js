@@ -10,12 +10,14 @@ const db = mysql.createPool({
 });
 
 app.get("/", (req, res) => {
-  const sqlInsert =
-    "INSERT INTO users (usuario, senha, email) VALUES ('admin', '81dc9bdb52d04dc20036dbd8313ed055', 'admin@hotmail.com');";
+  // const sqlInsert =
+  //   "INSERT INTO users (usuario, senha, email) VALUES ('teste', '81dc9bdb52d04dc20036dbd8313ed055', 'teste@hotmail.com');";
 
-  db.query(sqlInsert, (req, rest) => {
-    res.send("Hello World!");
-  });
+  // db.query(sqlInsert, (err, result) => {
+  //   res.send("Hello World!");
+  // });
+
+  res.send("Hello World!");
 });
 
 app.listen(3001, () => {
