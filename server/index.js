@@ -1,4 +1,6 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 const mysql = require("mysql");
 
@@ -9,15 +11,20 @@ const db = mysql.createPool({
   database: "template_project",
 });
 
-app.get("/", (req, res) => {
-  // const sqlInsert =
-  //   "INSERT INTO users (usuario, senha, email) VALUES ('teste', '81dc9bdb52d04dc20036dbd8313ed055', 'teste@hotmail.com');";
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  // db.query(sqlInsert, (err, result) => {
-  //   res.send("Hello World!");
-  // });
+app.post("/api/insert", (req, res) => {
+  const user = req.body.user;
+  const email = req.body.email;
+  const password = req.body.password;
 
-  res.send("Hello World!");
+  const sqlInsert =
+    "INSERT INTO users (usuario, senha, email) VALUES (?,MD5(?),?);";
+  db.query(sqlInsert, [user, password, email], (err, result) => {
+    console.log(result);
+  });
 });
 
 app.listen(3001, () => {
