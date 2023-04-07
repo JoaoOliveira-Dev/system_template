@@ -23,7 +23,12 @@ app.post("/api/insert", (req, res) => {
   const sqlInsert =
     "INSERT INTO users (usuario, senha, email) VALUES (?,MD5(?),?);";
   db.query(sqlInsert, [user, password, email], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Error inserting user");
+    }
     console.log(result);
+    return res.status(200).send("User inserted successfully");
   });
 });
 
