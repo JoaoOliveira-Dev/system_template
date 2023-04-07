@@ -27,8 +27,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 400px;
-  width: 400px;
+  height: 70vh;
+  min-height: 400px;
+  width: 25vw;
+  min-width: 400px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.103);
@@ -57,4 +59,31 @@
 
 .loginBox button:hover {
   background-color: #0971b4;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+
+  margin: 30px;
+  margin-bottom: 0;
+}
+
+.links a {
+  color: #185792;
+  text-decoration: none;
+  margin: 10px;
+}
+
+.links a::before {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0%;
+  background-color: #185792;
+  transition: width 0.3s ease-in-out;
+}
+
+.links a:hover::before {
+  width: 100%;
 }
