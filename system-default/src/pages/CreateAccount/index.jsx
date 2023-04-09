@@ -9,11 +9,6 @@ import Axios from "axios";
 // Import CSS
 import "./style.css";
 
-// Remove o botão de fechar do toast
-const CloseButton = ({ closeToast }) => (
-  <i className="material-icons" onClick={closeToast}></i>
-);
-
 const CreateAccount = () => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
@@ -85,7 +80,7 @@ const CreateAccount = () => {
           <button type="submit" onClick={submitAccount}>
             Criar Conta
           </button>
-          <ToastContainer closeButton={CloseButton} />
+          <ToastContainer closeButton={false} />
         </form>
       </div>
     </div>
