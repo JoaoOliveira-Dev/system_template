@@ -10,19 +10,16 @@ import Axios from "axios";
 import "./style.css";
 
 const LoginPages = () => {
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+
   const getReq = (e) => {
     e.preventDefault();
 
-    Axios.get("http://localhost:3001/api/get")
-      .then((response) => {
-        console.log("enviado: ", response.data);
-        toast.success("👄 Conta criada com sucesso!");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Erro ao criar conta. Tente novamente mais tarde.");
-      });
-    return;
+    if (user === "" || password === "") {
+      toast.error("🤨 Preencha todos os campos!");
+      return;
+    }
   };
 
   return (
@@ -30,7 +27,7 @@ const LoginPages = () => {
       <div className="loginBox">
         <h1 className="title">Login</h1>
         <form className="form">
-          <input type="text" placeholder="Usuário" />
+          <input type="text" placeholder="Usuário" required />
           <input type="password" placeholder="Senha" />
           <button type="submit" onClick={getReq}>
             Entrar
