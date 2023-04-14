@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const mysql = require("mysql");
+const routes = require("./routes");
 
 const db = mysql.createPool({
   host: "localhost",
@@ -12,6 +13,7 @@ const db = mysql.createPool({
 });
 
 app.use(cors());
+app.use(routes);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
