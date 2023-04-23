@@ -11,23 +11,44 @@ import "./style.css";
 
 const CreateAccount = () => {
   const [user, setUser] = useState("");
+  const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [data, setData] = useState([]);
 
   const submitAccount = (e) => {
     e.preventDefault();
 
-    if (user === "" || email === "" || password === "") {
+    if (login === "" || user === "" || email === "" || password === "") {
       toast.error("🤨 Preencha todos os campos!");
       return;
     }
 
+    Axios.get("http://localhost:3001/api/get")
+      .then((response) => {
+        console.log("enviado: ", response.data);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Erro ao criar conta. Tente novamente mais tarde.");
+      });
+
     if (password !== confirmPassword) {
       toast.error("🤨 As senhas não coincidem!");
       return;
+    }
+
+    const filteredData = data.filter((item) => item.login === login);
+    console.log("filteredData: ", filteredData);
+
+    if (filteredData.length > 0) {
+      toast.error("🤨 Usuário já existe!");
+      return;
     } else {
       Axios.post("http://localhost:3001/api/insert", {
+        login: login,
         user: user,
         email: email,
         password: password,
@@ -45,6 +66,7 @@ const CreateAccount = () => {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setLogin("");
     }
   };
 
@@ -55,9 +77,15 @@ const CreateAccount = () => {
         <form className="form">
           <input
             type="text"
-            placeholder="Usuário"
+            placeholder="Digite o seu nome"
             value={user}
             onChange={(e) => setUser(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Usuário"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
           />
           <input
             type="text"

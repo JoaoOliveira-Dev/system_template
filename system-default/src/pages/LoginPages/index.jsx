@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { MD5 } from "crypto-js";
 
 // Import para conectar com o servidor
 import Axios from "axios";
@@ -13,15 +14,20 @@ import "./style.css";
 const LoginPages = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [hash, setHash] = useState("");
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
+  const setarPassword = (e) => {
+    setHash(MD5(e.target.value).toString());
+    setPassword(e.target.value);
+  };
 
   const getReq = (e) => {
     e.preventDefault();
 
     Axios.get("http://localhost:3001/api/get")
       .then((response) => {
-        console.log("enviado: ", response.data);
         setData(response.data);
       })
       .catch((error) => {
@@ -30,13 +36,12 @@ const LoginPages = () => {
       });
 
     //create a new array with all users that have the same username
-    const filteredData = data.filter((item) => item.usuario === user);
-    console.log("filteredData: ", filteredData);
+    const filteredData = data.filter((item) => item.login === user);
 
     //check if the filtered array has at least one item
     if (filteredData.length > 0) {
       //check if the password is correct
-      if (filteredData[0].senha === password) {
+      if (filteredData[0].senha === hash) {
         toast.success("👄 Login efetuado com sucesso!");
         navigate("/home");
       } else {
@@ -65,7 +70,7 @@ const LoginPages = () => {
             type="password"
             placeholder="Senha"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setarPassword}
           />
           <button type="submit" onClick={getReq}>
             Entrar
