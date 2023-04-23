@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/api/get", (req, res) => {
-  const sqlSelect = "SELECT * FROM users";
+  const sqlSelect = "SELECT * FROM tab_usuario";
 
   db.query(sqlSelect, (err, result) => {
     if (err) {
@@ -28,13 +28,14 @@ app.get("/api/get", (req, res) => {
 });
 
 app.post("/api/insert", (req, res) => {
+  const login = req.body.login;
   const user = req.body.user;
   const email = req.body.email;
   const password = req.body.password;
 
   const sqlInsert =
-    "INSERT INTO users (usuario, senha, email) VALUES (?,MD5(?),?);";
-  db.query(sqlInsert, [user, password, email], (err, result) => {
+    "INSERT INTO tab_usuario (usuario, login, senha, email) VALUES (?,?,MD5(?),?);";
+  db.query(sqlInsert, [user, login, password, email], (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).send("Error inserting user");
