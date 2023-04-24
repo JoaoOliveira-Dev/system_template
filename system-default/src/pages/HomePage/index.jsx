@@ -1,7 +1,17 @@
-import React from "react";
+import { useState, useEffect, useContext } from "react";
+
+// Authenticated Context
+import { AuthContext } from "../../features/auth/authContext";
 
 const HomePages = () => {
-  return <h1>HomePage</h1>;
-}
+  const { authenticated, logout } = useContext(AuthContext);
+
+  return (
+    <div>
+      <h1>Home</h1>
+      <button onClick={logout}>Logout</button>
+    </div>
+  );
+};
 
 export default HomePages;

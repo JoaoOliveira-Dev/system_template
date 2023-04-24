@@ -1,52 +1,65 @@
 // Imports do REACT
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { MD5 } from "crypto-js";
 
 // Import para conectar com o servidor
 import Axios from "axios";
+import { LoginAuth } from "../../features/Api/api";
 
 // Import do CSS
 import "./style.css";
 
+// Authenticated Context
+import { AuthContext } from "../../features/auth/authContext";
+
 const LoginPages = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const [hash, setHash] = useState("");
-  const [data, setData] = useState([]);
-  const navigate = useNavigate();
+  const { authenticated, login } = useContext(AuthContext);
 
-  const setarPassword = (e) => {
-    setHash(MD5(e.target.value).toString());
-    setPassword(e.target.value);
-  };
+  // Função para fazer o login
+  // const getReq = (e) => {
+  //   e.preventDefault();
 
+  //   Axios.get("http://localhost:3001/api/get")
+  //     .then((response) => {
+  //       setData(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toast.error("Erro ao criar conta. Tente novamente mais tarde.");
+  //     });
+
+  //   //create a new array with all users that have the same username
+  //   const filteredData = data.filter((item) => item.login === user);
+
+  //   //check if the filtered array has at least one item
+  //   if (filteredData.length > 0) {
+  //     //check if the password is correct
+  //     if (filteredData[0].senha === hash) {
+  //       toast.success("👄 Login efetuado com sucesso!");
+
+  //       const id = filteredData[0].id;
+  //       login(id, user); // Integração com o contexto / api
+  //     } else {
+  //       toast.error("Senha incorreta. Tente novamente.");
+  //     }
+  //   } else {
+  //     toast.error("Usuário não encontrado. Tente novamente.");
+  //   }
+
+  //   setUser("");
+  //   setPassword("");
+  // };
   const getReq = (e) => {
     e.preventDefault();
 
-    Axios.get("http://localhost:3001/api/get")
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Erro ao criar conta. Tente novamente mais tarde.");
-      });
+    login(user, password); // Integração com o contexto / api
 
-    //create a new array with all users that have the same username
-    const filteredData = data.filter((item) => item.login === user);
-
-    //check if the filtered array has at least one item
-    if (filteredData.length > 0) {
-      //check if the password is correct
-      if (filteredData[0].senha === hash) {
-        toast.success("👄 Login efetuado com sucesso!");
-        navigate("/home");
-      } else {
-        toast.error("Senha incorreta. Tente novamente.");
-      }
+    if (authenticated) {
+      toast.success("👄 Login efetuado com sucesso!");
     } else {
       toast.error("Usuário não encontrado. Tente novamente.");
     }
@@ -70,14 +83,15 @@ const LoginPages = () => {
             type="password"
             placeholder="Senha"
             value={password}
-            onChange={setarPassword}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit" onClick={getReq}>
             Entrar
           </button>
         </form>
+        <p>{String(authenticated)}</p>
         <div className="links">
-          <a href="#">Esqueceu a senha?</a>
+          {/* <a href="#">Esqueceu a senha?</a> */}
           <a href="/create-account">Criar uma conta</a>
           <a href="/render-list">Renderizar lista</a>
         </div>

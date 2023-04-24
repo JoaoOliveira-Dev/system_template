@@ -45,6 +45,25 @@ app.post("/api/insert", (req, res) => {
   });
 });
 
+app.post("/api/login", (req, res) => {
+  const user = req.body.user;
+  const password = req.body.password;
+
+  const sqlSelect =
+    "SELECT * FROM tab_usuario WHERE login = ? AND senha = MD5(?);";
+  db.query(sqlSelect, [user, password], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Error fetching users");
+    }
+    if (result.length > 0) {
+      return res.status(200).send(result);
+    } else {
+      return res.status(404).send("User not found");
+    }
+  });
+});
+
 app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
