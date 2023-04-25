@@ -60,11 +60,11 @@ app.post("/api/login", (req, res) => {
     }
     if (result.length > 0) {
       const id = result[0].id;
-      const token = jwt.sign({id}, "jwtSecret", {
+      const token = jwt.sign({ id }, "jwtSecret", {
         expiresIn: 300,
-        });
+      });
 
-        result[0].token = token;
+      result[0].token = token;
 
       return res.status(200).send(result);
     } else {

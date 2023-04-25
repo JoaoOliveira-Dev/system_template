@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { LoginAuth } from "../Api/api";
+import { Login } from "../Api/api";
 
 export const AuthContext = createContext();
 
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (user, password) => {
-    const ret = await LoginAuth(user, password);
+    const ret = await Login(user, password);
     console.log("ret", ret);
     const id = ret.data[0].id;
 
