@@ -4,6 +4,8 @@ const cors = require("cors");
 const app = express();
 const mysql = require("mysql");
 
+const jwt = require("jsonwebtoken");
+
 const db = mysql.createPool({
   host: "localhost",
   user: "root",
@@ -57,6 +59,13 @@ app.post("/api/login", (req, res) => {
       return res.status(500).send("Error fetching users");
     }
     if (result.length > 0) {
+      const id = result[0].id;
+      const token = jwt.sign({id}, "jwtSecret", {
+        expiresIn: 300,
+        });
+
+        result[0].token = token;
+
       return res.status(200).send(result);
     } else {
       return res.status(404).send("User not found");

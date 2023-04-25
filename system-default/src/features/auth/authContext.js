@@ -21,13 +21,15 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (id, usuario) => {
-    const ret = await LoginAuth(id, usuario);
-    console.log(ret);
+  const login = async (user, password) => {
+    const ret = await LoginAuth(user, password);
+    console.log("ret", ret);
+    const id = ret.data[0].id;
 
     if (ret) {
-      setUser({ id, usuario });
-      localStorage.setItem("user", JSON.stringify({ id, usuario }));
+      setUser({ id, user });
+      const token = ret.data[0].token;
+      localStorage.setItem("user", JSON.stringify({ token, id, user }));
       navigate("/home");
 
       return true;

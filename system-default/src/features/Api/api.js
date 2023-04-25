@@ -5,8 +5,5 @@ export const api = axios.create({
 });
 
 export const LoginAuth = (user, password) => {
-  return (
-    console.log("chegou no login auth: ", user, password),
-    api.post("/login", { user, password })
-  );
+  return api.post("/login", { user, password })
 };
