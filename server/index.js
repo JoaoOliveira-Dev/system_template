@@ -49,7 +49,6 @@ app.post("/api/insert", (req, res) => {
 
 const verifyJWT = (req, res, next) => {
   const token = req.headers["x-access-token"];
-  console.log("chegou aqui", token);
 
   if (!token) {
     return res.status(401).send({ auth: false, message: "No token provided." });
@@ -63,8 +62,6 @@ const verifyJWT = (req, res, next) => {
     }
 
     req.userId = decoded.id;
-    console.log("req.userId", req.userId);
-    console.log("Deu bom");
     next();
   });
 };
