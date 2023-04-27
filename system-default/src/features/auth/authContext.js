@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const recoveredUser = localStorage.getItem("token");
 
     if (recoveredUser) {
-      setUser(JSON.parse(recoveredUser));
+      setUser(recoveredUser);
       navigate("/home");
     }
 
