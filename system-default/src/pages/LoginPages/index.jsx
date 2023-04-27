@@ -19,40 +19,6 @@ const LoginPages = () => {
   const [password, setPassword] = useState("");
   const { authenticated, login } = useContext(AuthContext);
 
-  // Função para fazer o login
-  // const getReq = (e) => {
-  //   e.preventDefault();
-
-  //   Axios.get("http://localhost:3001/api/get")
-  //     .then((response) => {
-  //       setData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       toast.error("Erro ao criar conta. Tente novamente mais tarde.");
-  //     });
-
-  //   //create a new array with all users that have the same username
-  //   const filteredData = data.filter((item) => item.login === user);
-
-  //   //check if the filtered array has at least one item
-  //   if (filteredData.length > 0) {
-  //     //check if the password is correct
-  //     if (filteredData[0].senha === hash) {
-  //       toast.success("👄 Login efetuado com sucesso!");
-
-  //       const id = filteredData[0].id;
-  //       login(id, user); // Integração com o contexto / api
-  //     } else {
-  //       toast.error("Senha incorreta. Tente novamente.");
-  //     }
-  //   } else {
-  //     toast.error("Usuário não encontrado. Tente novamente.");
-  //   }
-
-  //   setUser("");
-  //   setPassword("");
-  // };
   const getReq = (e) => {
     e.preventDefault();
 

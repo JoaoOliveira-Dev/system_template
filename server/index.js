@@ -49,7 +49,7 @@ app.post("/api/insert", (req, res) => {
 
 const verifyJWT = (req, res, next) => {
   const token = req.headers["x-access-token"];
-  console.log("token", token);
+  console.log("chegou aqui", token);
 
   if (!token) {
     return res.status(401).send({ auth: false, message: "No token provided." });
@@ -57,10 +57,14 @@ const verifyJWT = (req, res, next) => {
 
   jwt.verify(token, "jwtSecret", function (err, decoded) {
     if (err) {
-      return res.status(500).send({ auth: false, message: "Failed to authenticate token." });
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
     }
 
     req.userId = decoded.id;
+    console.log("req.userId", req.userId);
+    console.log("Deu bom");
     next();
   });
 };
@@ -68,25 +72,6 @@ const verifyJWT = (req, res, next) => {
 app.get("/api/isAuth", verifyJWT, (req, res) => {
   return res.status(200).send({ auth: true, message: "Authenticated" });
 });
-
-// app.get("/api/isAuth", (req, res) => {
-//   const token = req.headers["x-access-token"];
-//   console.log("token", token);
-
-//   if (!token) {
-//     return res.status(401).send({ auth: false, message: "No token provided." });
-//   }
-
-//   jwt.verify(token, "jwtSecret", function (err, decoded) {
-//     if (err) {
-//       return res
-//         .status(500)
-//         .send({ auth: false, message: "Failed to authenticate token." });
-//     }
-
-//     return res.status(200).send({ auth: true, message: "Authenticated" });
-//   });
-// });
 
 app.post("/api/login", (req, res) => {
   const user = req.body.user;
@@ -105,9 +90,9 @@ app.post("/api/login", (req, res) => {
         expiresIn: 300,
       });
 
-      result[0].token = token;
+      ret = [{ id: result[0].id, token: token }];
 
-      return res.status(200).send(result);
+      return res.status(200).send(ret);
     } else {
       return res.status(404).send("User not found");
     }

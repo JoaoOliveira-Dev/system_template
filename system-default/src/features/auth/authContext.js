@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { Login } from "../Api/api";
-import axios from "axios";
+import { Login, IsAuth } from "../Api/api";
+import Axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const recoveredUser = localStorage.getItem("user");
+    const recoveredUser = localStorage.getItem("token");
 
     if (recoveredUser) {
       setUser(JSON.parse(recoveredUser));
@@ -30,9 +30,11 @@ export const AuthProvider = ({ children }) => {
     if (ret) {
       setUser({ id, user });
       const token = ret.data[0].token;
-      localStorage.setItem("user", JSON.stringify({ token, id, user }));
+      localStorage.setItem("token", token);
 
-      axios.defaults.headers.common["x-access-token"] = token;
+      // axios.defaults.headers.common["x-access-token"] = `Bearer ${token}`;
+
+      IsAuth();
 
       navigate("/home");
 
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     console.log("logout");
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     navigate("/");
     setUser(null);
   };
