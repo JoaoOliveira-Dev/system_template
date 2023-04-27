@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { Login } from "../Api/api";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -30,6 +31,9 @@ export const AuthProvider = ({ children }) => {
       setUser({ id, user });
       const token = ret.data[0].token;
       localStorage.setItem("user", JSON.stringify({ token, id, user }));
+
+      axios.defaults.headers.common["x-access-token"] = token;
+
       navigate("/home");
 
       return true;

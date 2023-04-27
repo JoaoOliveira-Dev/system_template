@@ -47,6 +47,47 @@ app.post("/api/insert", (req, res) => {
   });
 });
 
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  console.log("token", token);
+
+  if (!token) {
+    return res.status(401).send({ auth: false, message: "No token provided." });
+  }
+
+  jwt.verify(token, "jwtSecret", function (err, decoded) {
+    if (err) {
+      return res.status(500).send({ auth: false, message: "Failed to authenticate token." });
+    }
+
+    req.userId = decoded.id;
+    next();
+  });
+};
+
+app.get("/api/isAuth", verifyJWT, (req, res) => {
+  return res.status(200).send({ auth: true, message: "Authenticated" });
+});
+
+// app.get("/api/isAuth", (req, res) => {
+//   const token = req.headers["x-access-token"];
+//   console.log("token", token);
+
+//   if (!token) {
+//     return res.status(401).send({ auth: false, message: "No token provided." });
+//   }
+
+//   jwt.verify(token, "jwtSecret", function (err, decoded) {
+//     if (err) {
+//       return res
+//         .status(500)
+//         .send({ auth: false, message: "Failed to authenticate token." });
+//     }
+
+//     return res.status(200).send({ auth: true, message: "Authenticated" });
+//   });
+// });
+
 app.post("/api/login", (req, res) => {
   const user = req.body.user;
   const password = req.body.password;
