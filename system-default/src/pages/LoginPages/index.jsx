@@ -25,7 +25,7 @@ const LoginPages = () => {
     login(user, password); // Integração com o contexto / api
 
     if (authenticated) {
-      toast.success("👄 Login efetuado com sucesso!");
+      toast.success("Login efetuado com sucesso!");
     } else {
       toast.error("Usuário não encontrado. Tente novamente.");
     }
