@@ -42,16 +42,18 @@ const LoginPages = () => {
           <input
             type="text"
             placeholder="Usuário"
+            name="username"
             value={user}
             onChange={(e) => setUser(e.target.value)}
           />
           <input
             type="password"
             placeholder="Senha"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" onClick={getReq}>
+          <button type="submit" name="logar" onClick={getReq}>
             Entrar
           </button>
         </form>
